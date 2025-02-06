@@ -1,1 +1,7 @@
 /database/ 
+venv/
+db.sqlite3
+*.sqlite
+*.sqlite3
+__pycache__/
+*.db

@@ -5,7 +5,7 @@ from pathlib import Path
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-your-secret-key-here'  # Generate a proper one for production
+SECRET_KEY = 'django-insecure-your-secret-key-here-please!!!'  # Generate a proper one for production
 
 # Application definition
 INSTALLED_APPS = [
@@ -73,5 +73,5 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Development settings
 DEBUG = False
-ALLOWED_HOSTS = [os.environ.get('RENDER_EXTERNAL_HOSTNAME', 'localhost')]
+ALLOWED_HOSTS = [os.environ.get('RENDER_EXTERNAL_HOSTNAME', 'localhost', 'https://*.onrender.com')]
 CSRF_TRUSTED_ORIGINS = ['https://*.onrender.com']
