@@ -73,5 +73,5 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Development settings
 DEBUG = False
-ALLOWED_HOSTS = [os.environ.get('localhost', 'https://*.onrender.com')]
-CSRF_TRUSTED_ORIGINS = ['https://*.onrender.com']
+ALLOWED_HOSTS = [os.environ.get('https://tic-tac-toe-bmwl.onrender.com', 'https://*.onrender.com')]
+CSRF_TRUSTED_ORIGINS = ['https://tic-tac-toe-bmwl.onrender.com']
