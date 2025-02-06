@@ -1,0 +1,14 @@
+services:
+  - type: web
+    name: tic-tac-toe
+    runtime: python
+    buildCommand: "./build.sh"
+    startCommand: "gunicorn tic_tac_toe.wsgi:application"
+    envVars:
+      - key: SECRET_KEY
+        generateValue: true
+    plan: free
+    disk:
+      name: sqlite-storage
+      mountPath: /var/app/db
+      sizeGB: 1 

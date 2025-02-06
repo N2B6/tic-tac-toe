@@ -1,0 +1,1 @@
+web: gunicorn --workers 3 --bind unix:/var/run/gunicorn.sock tic_tac_toe.wsgi:application 

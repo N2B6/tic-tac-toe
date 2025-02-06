@@ -1,0 +1,139 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Tic Tac Toe</title>
+    <link rel="icon" href="{% static 'game/favicon.ico' %}">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            text-align: center;
+            transition: background 0.5s ease;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 30px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            color: #2c3e50;
+            font-size: 2.8em;
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        .game-list {
+            display: grid;
+            gap: 15px;
+            margin: 30px auto;
+            max-width: 600px;
+        }
+
+        .game-card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+
+        .game-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 15px rgba(0,0,0,0.1);
+        }
+
+        .game-status {
+            font-weight: bold;
+            padding: 8px 15px;
+            border-radius: 20px;
+        }
+
+        .status-ongoing {
+            background: #3498db;
+            color: white;
+        }
+
+        .status-finished {
+            background: #2ecc71;
+            color: white;
+        }
+
+        .new-game-btn {
+            display: inline-block;
+            margin-top: 30px;
+            padding: 15px 30px;
+            background: #e74c3c;
+            color: white;
+            text-decoration: none;
+            border-radius: 25px;
+            font-size: 1.2em;
+            transition: all 0.3s ease;
+        }
+
+        .new-game-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(231, 76, 60, 0.4);
+        }
+
+        /* Include all previous animations and effects */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes popIn {
+            0% { transform: scale(0.8); opacity: 0; }
+            80% { transform: scale(1.1); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎮 Tic Tac Toe</h1>
+        
+        <div class="game-list">
+            {% for game in games %}
+                <a href="{% url 'game' game.id %}" class="game-card">
+                    <span>Game #{{ game.id }}</span>
+                    <span class="game-status {% if game.is_over %}status-finished{% else %}status-ongoing{% endif %}">
+                        {% if game.is_over %}
+                            🏁 Finished
+                        {% else %}
+                            🕹️ Playing
+                        {% endif %}
+                    </span>
+                </a>
+            {% empty %}
+                <p>No games yet! Start a new one! 🚀</p>
+            {% endfor %}
+        </div>
+
+        <a href="{% url 'new_game' %}" class="new-game-btn">✨ Start New Game</a>
+    </div>
+
+    <script>
+        // This creates the color wave effect
+        let hue = 0;
+        setInterval(() => {
+            if(document.querySelector('.game-status.status-ongoing')) {
+                hue = (hue + 1) % 360;
+                document.body.style.background = `linear-gradient(135deg, hsl(${hue}, 70%, 85%) 0%, hsl(${(hue+90)%360}, 70%, 85%) 100%)`;
+            }
+        }, 50);
+    </script>
+</body>
+</html> 

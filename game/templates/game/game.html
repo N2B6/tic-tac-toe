@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Game {{ game.id }}</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(
+                135deg, 
+                var(--primary-color) 0%, 
+                var(--secondary-color) 100%
+            );
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            text-align: center;
+            transition: background 0.8s ease;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            color: #2c3e50;
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        .board {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin: 30px auto;
+            max-width: 400px;
+        }
+
+        .cell {
+            aspect-ratio: 1;
+            background: white;
+            border: 3px solid #3498db;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .cell:hover:not(:disabled) {
+            transform: scale(1.05);
+            background: #f8f9fa;
+        }
+
+        .cell:active:not(:disabled) {
+            transform: scale(0.95);
+        }
+
+        .cell.x {
+            color: #e74c3c;
+            font-weight: bold;
+        }
+
+        .cell.o {
+            color: #2ecc71;
+            font-weight: bold;
+        }
+
+        .cell:disabled {
+            cursor: not-allowed;
+            opacity: 0.8;
+        }
+
+        .status {
+            font-size: 1.5em;
+            margin: 20px 0;
+            padding: 15px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .game-over {
+            background: linear-gradient(
+                135deg,
+                #2c3e50,
+                #3498db,
+                #2980b9
+            );
+            background-size: 200% 200%;
+            animation: gradient-flow 8s ease infinite;
+        }
+
+        .current-player {
+            background: #3498db;
+            color: white;
+        }
+
+        a {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background: #3498db;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+
+        a:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.4);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes popIn {
+            0% { transform: scale(0.8); opacity: 0; }
+            80% { transform: scale(1.1); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        @keyframes cellPop {
+            0% { transform: scale(0); }
+            90% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        .cell-pop {
+            animation: cellPop 0.3s ease-out;
+        }
+
+        @keyframes gradient-x {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        @keyframes gradient-o {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .gradient-transition {
+            background-size: 200% 200%;
+            animation: gradient-flow 15s ease infinite;
+        }
+
+        .player-x {
+            background: linear-gradient(
+                135deg,
+                #ff6b6b,
+                #e74c3c,
+                #c0392b
+            );
+            background-size: 200% 200%;
+            animation: gradient-flow 8s ease infinite;
+        }
+
+        .player-o {
+            background: linear-gradient(
+                135deg,
+                #1abc9c,
+                #2ecc71,
+                #27ae60
+            );
+            background-size: 200% 200%;
+            animation: gradient-flow 8s ease infinite;
+        }
+
+        @keyframes pulse-glow {
+            0% { opacity: 0.8; }
+            50% { opacity: 1; }
+            100% { opacity: 0.8; }
+        }
+
+        .player-x, .player-o {
+            animation: pulse-glow 2s ease-in-out infinite;
+        }
+
+        @keyframes gradient-flow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+    </style>
+</head>
+<body class="{% if game.is_over %}game-over{% else %}{% if game.current_player == 'X' %}player-x{% else %}player-o{% endif %}{% endif %}">
+    <div class="container">
+        <h1>Game {{ game.id }}</h1>
+        
+        <div class="status {% if game.is_over %}game-over{% else %}current-player{% endif %}">
+            {% if game.is_over %}
+                Game Over! {% if game.winner %}🎉 Winner: {{ game.winner }}{% else %}🤝 Draw{% endif %}
+            {% else %}
+                🎮 Current Player: {{ game.current_player }}
+            {% endif %}
+        </div>
+
+        <form method="post">
+            {% csrf_token %}
+            <div class="board">
+                {% for row in game.get_board %}
+                    {% for cell in row %}
+                        <button type="submit" name="position" 
+                                value="{{ forloop.parentloop.counter0|add:forloop.parentloop.counter0|add:forloop.parentloop.counter0|add:forloop.counter0 }}"
+                                class="cell {% if cell == 'X' %}x{% elif cell == 'O' %}o{% endif %} {% if cell != ' ' %}cell-pop{% endif %}"
+                                {% if game.is_over or cell != ' ' %}disabled{% endif %}>
+                            {{ cell }}
+                        </button>
+                    {% endfor %}
+                {% endfor %}
+            </div>
+        </form>
+
+        <a href="{% url 'home' %}">🏠 Back to Home</a>
+    </div>
+
+    <script>
+        // Add sound effects
+        const playSound = () => {
+            const audio = new Audio('data:audio/wav;base64,UklGRl9vT19XQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YU');
+            audio.play();
+        };
+
+        // Add click animation
+        document.querySelectorAll('.cell').forEach(cell => {
+            cell.addEventListener('click', () => {
+                if (!cell.disabled) {
+                    playSound();
+                    cell.classList.add('cell-pop');
+                    setTimeout(() => cell.classList.remove('cell-pop'), 300);
+                }
+            });
+        });
+
+        // Add periodic status pulse
+        setInterval(() => {
+            const status = document.querySelector('.status');
+            status.style.transform = 'scale(1.02)';
+            setTimeout(() => status.style.transform = 'scale(1)', 200);
+        }, 3000);
+    </script>
+</body>
+</html> 
