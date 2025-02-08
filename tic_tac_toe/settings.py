@@ -65,7 +65,6 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 STATICFILES_DIRS = [BASE_DIR / "game/static/game"]
 
 # Default primary key field type
@@ -75,6 +74,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 DEBUG = False
 ALLOWED_HOSTS = [
     os.environ.get('RENDER_EXTERNAL_HOSTNAME', '127.0.0.1'),  # Render's environment variable
-    'https://tic-tac-toe-bmwl.onrender.com'  # Your exact Render domain
+    'tic-tac-toe-bmwl.onrender.com'  # Your exact Render domain
 ]
-CSRF_TRUSTED_ORIGINS = ['https://tic-tac-toe-bmwl.onrender.com']
+CSRF_TRUSTED_ORIGINS = ['https://tic-tac-toe-bmwl.onrender.com','http://127.0.0.1']
