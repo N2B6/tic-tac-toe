@@ -72,7 +72,7 @@ STATICFILES_DIRS = [BASE_DIR / "game/static"]
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Development settings
-DEBUG = False
+DEBUG = True
 ALLOWED_HOSTS = [
     os.environ.get('RENDER_EXTERNAL_HOSTNAME', '127.0.0.1'),  # Render's environment variable
     'tic-tac-toe-bmwl.onrender.com'  # Your exact Render domain
