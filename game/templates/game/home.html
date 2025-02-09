@@ -126,13 +126,11 @@
     </div>
 
     <script>
-        // This creates the color wave effect
+        // Modified background color wave effect
         let hue = 0;
         setInterval(() => {
-            if(document.querySelector('.game-status.status-ongoing')) {
-                hue = (hue + 1) % 360;
-                document.body.style.background = `linear-gradient(135deg, hsl(${hue}, 70%, 85%) 0%, hsl(${(hue+90)%360}, 70%, 85%) 100%)`;
-            }
+            hue = (hue + 1) % 360;
+            document.body.style.background = `linear-gradient(135deg, hsl(${hue}, 70%, 85%) 0%, hsl(${(hue+90)%360}, 70%, 85%) 100%)`;
         }, 50);
     </script>
 </body>
