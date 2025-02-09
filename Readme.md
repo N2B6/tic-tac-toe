@@ -1,6 +1,6 @@
 # 🎮 Tic Tac Toe Web Application
 
-[![Django](https://img.shields.io/badge/Django-3.2-brightgreen.svg)](https://docs.djangoproject.com/en/3.2/)
+[![Django](https://img.shields.io/badge/Django-3.2-brightgreen.svg)](https://docs.djangoproject.com/en/5.0/)
 [![Render](https://img.shields.io/badge/Deployed%20on-Render-%2346e3b7)](https://render.com)
 
 A modern web-based implementation of the classic Tic Tac Toe game with real-time gameplay, animated interface, and game history tracking.
